@@ -37,13 +37,13 @@ export default function Portfolio() {
               </div>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-              <span className="block">Hi, I'm</span>
+              <span className="block">Olá! Sou o</span>
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
-                Shine Kyaw Kyaw Aung
+                Luiz Neto
               </span>
             </h1>
             <p className="text-xl text-zinc-400 max-w-[600px]">
-              I craft exceptional digital experiences with code, creativity, and a passion for innovation.
+              Crio experiências digitais excepcionais com código, criatividade e paixão por inovação.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
               <Button className="relative overflow-hidden group bg-gradient-to-r from-purple-500 to-pink-500 border-0">
