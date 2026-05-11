@@ -4,51 +4,49 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Common Development Commands
 
-- **Start development server**: `npm run dev` (or `pnpm dev` if using pnpm). This runs `next dev`.
-- **Build for production**: `npm run build` – runs `next build`.
-- **Start production server**: `npm start` – runs `next start` on the built output.
-- **Lint**: `npm run lint` – runs `next lint`.
-- **Run a single test**: The project currently has no test script; add one to `package.json` if needed, then use `npm test -- <test-file>`.
+Use **pnpm** for package management (the lock file is `pnpm-lock.yaml`). All scripts below work with `npm`, `yarn`, or `pnpm`:
+
+- **Start development server**: `pnpm dev` – runs `next dev` and reloads on file changes.
+- **Build for production**: `pnpm build` – runs `next build`.
+- **Start production server**: `pnpm start` – runs `next start` on the built output.
+- **Lint**: `pnpm lint` – runs `next lint`.
 
 ## High‑Level Architecture
 
-- **Framework**: Next.js 15 (App Router). Entry point is `app/layout.tsx` which defines the root HTML layout and global metadata. Each page lives under `app/` – the main portfolio page is `app/page.tsx`.
-- **Component Library**: UI components are organized under `components/` and further under `components/ui/`. Most UI elements are built with Radix UI primitives and Tailwind CSS, with custom wrappers (e.g., `Button`, `SkillBadge`, `ProjectCard`). The `components/ui/` directory provides reusable primitives such as `button.tsx`, `dialog.tsx`, `toast.tsx`, etc.
-- **Styling**: Tailwind CSS is the primary styling system (`tailwind.config.ts`). Global styles live in `styles/globals.css` and are imported in `app/layout.tsx`.
-- **Utilities**: Shared helper functions are in `lib/utils.ts`.
-- **Pages / Sections**: The portfolio is composed of several sections (hero, about, skills, projects, experience, contact) each represented by a component in `components/` and assembled in `app/page.tsx`.
-- **Static Assets**: Images and placeholders reside in `public/`.
-- **Routing**: No API routes are defined; the site is purely static/SSR.
+- **Framework**: Next.js 15 (App Router). Entry point is `app/layout.tsx` which defines the root HTML layout and global metadata. Main portfolio page is `app/page.tsx`.
+- **UI Components**: `components/ui/` contains shadcn/ui primitives (Button, Dialog, Toast, etc.) – add new ones with `npx shadcn-ui@latest add <component>`. Feature components like `ProjectCard`, `SkillBadge`, and `CreativeHero` are in `components/`.
+- **Styling**: Tailwind CSS with CSS variables for theming (`tailwind.config.ts`). Global styles are in `app/globals.css`.
+- **Animations**: Framer Motion is used for component animations throughout the site.
+- **Custom Hooks**: `hooks/` contains utilities like `use-mobile` (responsive breakpoint detection) and `use-toast` (toast notification system).
+- **Utilities**: `lib/utils.ts` contains shared helper functions (primarily for class merging via clsx/tailwind-merge).
+- **Page Composition**: The portfolio sections (hero, about, skills, projects, experience, contact) are assembled in `app/page.tsx` with floating navigation, scroll progress tracking, and custom mouse following effects.
+- **No API routes** – the site is purely client-side rendered with static content.
 
-## Project Structure Overview
+## Project Structure
 
 ```
-app/                # Next.js App Router pages and layout
-  layout.tsx        # Root layout and metadata
-  page.tsx          # Main portfolio page
-components/          # Feature components (hero, skills, etc.)
-components/ui/     # Reusable UI primitives (button, dialog, toast, …)
-lib/                # Utility functions
-public/             # Static assets (images, icons)
-styles/             # Global CSS (Tailwind imports)
-next.config.mjs      # Next.js config (default)
-package.json        # Scripts and dependencies
-tailwind.config.ts   # Tailwind configuration
-tsconfig.json       # TypeScript settings
+app/                    # Next.js App Router
+  layout.tsx            # Root layout
+  page.tsx              # Main portfolio page
+  globals.css           # Global styles
+components/             # Feature components (CreativeHero, ProjectCard, etc.)
+  ui/                   # shadcn/ui primitives
+hooks/                  # Custom React hooks (use-mobile, use-toast)
+lib/                    # Utilities (utils.ts for class merging)
+public/                 # Static assets
+components.json         # shadcn/ui configuration
+next.config.mjs         # Next.js settings (ESLint/TS errors ignored)
+tailwind.config.ts      # Tailwind CSS config with animations
+tsconfig.json           # TypeScript configuration
 ```
 
-## Development Tips
+## Key Notes
 
-- Run `npm install` after cloning to install dependencies.
-- Use the Tailwind IntelliSense extension in VS Code for class suggestions.
-- Component props are strongly typed; refer to their TypeScript definitions for usage.
-- The site is designed for Vercel deployment; simply push to a linked Vercel project to trigger a preview.
+- **Build Configuration**: `next.config.mjs` intentionally disables ESLint and TypeScript build errors. These are still checked during `pnpm lint` but don't block builds.
+- **Image Optimization**: Images are unoptimized (next/image optimization is disabled) for simpler asset handling.
+- **Adding UI Components**: Use `npx shadcn-ui@latest add <component>` to add shadcn/ui components (they'll be installed in `components/ui/`).
+- **Origin**: Built with v0.dev (Vercel's AI component generator) – this context may be relevant for future v0 integrations.
 
-## Vercel Deployment
+## Deployment
 
-- The repository is already Vercel‑ready. Linking the repo in the Vercel dashboard will create preview URLs automatically.
-- For production, use the `vercel` CLI: `vercel --prod` after a successful build.
-
----
-
-*Generated for Claude Code to streamline onboarding and day‑to‑day development.*
+The site is Vercel-ready. Push to a linked Vercel repository to trigger automatic previews and production deployments.
